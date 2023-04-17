@@ -32,6 +32,17 @@ services:
     volumes:
       - ./db:/data
     command: redis-server --save 60 1 --loglevel warning
+ 
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+      - HTTP_USER=root
+      - HTTP_PASSWORD=password
+    ports:
+      - 8081:8081
+    depends_on:
+      - redis
 
   dashboard:
     build: ./project
