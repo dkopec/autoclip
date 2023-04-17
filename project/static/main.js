@@ -78,7 +78,7 @@ function getStatus(taskID) {
       if (taskStatus === 'SUCCESS' || taskStatus === 'FAILURE') return false;
       setTimeout(function () {
         getStatus(res.task_id);
-      }, 1000);
+      }, 5000);
     })
     .catch(err => console.log(err));
 }
