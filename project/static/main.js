@@ -38,7 +38,7 @@ function getStatus(taskID) {
           status_icon = '❌';
           break;
         case 'PENDING':
-          status_icon = '⏳';
+          status_icon = `<span class="emoji hourglass" role="img" aria-label="hourglass"></span>`;
           break;
       }
       var status = `${status_icon} ${res.task_status}`;

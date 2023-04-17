@@ -15,3 +15,21 @@ body {
   height: 50px;
   line-height: 50px;
 }
+
+.emoji::after {
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.hourglass::after {
+  content: '⏳';
+  --emoji: '⌛️';
+  animation-name: twoFrames;
+  animation-duration: 1.2s;
+}
+
+@keyframes twoFrames {
+  50% {
+      content: var(--emoji);
+  }
+}
