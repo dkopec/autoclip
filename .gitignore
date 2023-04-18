@@ -8,6 +8,6 @@ env
 *.info.json
 *.mp4
 *.webp
+*.webm
 downloads
-data/*
-!.minio.sys
+data
