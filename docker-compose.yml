@@ -28,8 +28,7 @@ services:
       - MINIO_ACCESS_KEY=K5Uj7tTYNX2zdyPU
       - MINIO_SECRET_KEY=BBFufL13fafNSWL9L6oNugkWghNUQzSs
       - MINIO_BUCKET_VIDEO=video
-      - REDDIS_URL=reddis
-      - REDDIS_PORT=6379
+      - REDDIS_URL=redis://redis:6379/0
     depends_on:
       - web
       - redis

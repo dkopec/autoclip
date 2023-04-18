@@ -10,12 +10,14 @@ from redis import Redis
 from minio import Minio
 
 
-db = Redis(
-    host=os.environ.get(
-        "REDDIS_URL", 'localhost'), 
-    port=os.environ.get(
-        "REDDIS_PORT", 6379), 
-    db=0)
+reddis_port = os.environ.get("REDDIS_PORT", 6379)
+download_path = os.environ.get("YTDL_DOWNLOAD_PATH", "/data")
+
+db = Redis.from_url( 
+    url=os.environ.get(
+        "REDDIS_URL", f'rediss://localhost:{reddis_port}/0'),
+    db=0
+)
 
 
 storage = Minio(
@@ -59,27 +61,23 @@ class AutoClipVideo(BaseModel):
 @celery.task(name="download_url")
 def download_url(url):
     ydl_opts = {
-        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
-        'outtmpl': '%(id)s.%(ext)s',
-        'remux_video': True,
+        'outtmpl': f'{download_path}/%(id)s.%(ext)s',
         'nooverwrites': True,
         'quiet': True,
-        'forcefilename': True,
-        'writethumbnail': True,
         'writeinfojson': True,  # enable metadata download
-        'writesubtitles': True
     }
 
     with YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(url, download=True)
         filepath = ydl.prepare_filename(info_dict)
         video_id = info_dict.get("id", None)
+        video_ext = info_dict.get("ext", None)
 
     print(f"Done downloading video from: {url} to {filepath}")
 
     # Upload the video to MinIO
     bucket_name = video_bucket
-    object_name = video_id
+    object_name = f"{video_id}.{video_ext}"
     file_path = filepath
     storage_url = None
     try:
@@ -94,7 +92,7 @@ def download_url(url):
 
     # Upload the meta to MinIO
     bucket_name = video_bucket
-    object_name = video_id
+    object_name = f"{video_id}.info.json"
     file_path = f"{video_id}.info.json"
     meta_url = None
     try:
