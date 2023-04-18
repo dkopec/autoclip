@@ -83,8 +83,22 @@ function getStatus(taskID) {
     .catch(err => console.log(err));
 }
 
+const form = document.getElementById('download-form');
+const submitButton = document.getElementById('submit-button');
+const taskIdElement = document.getElementById('task-id');
 
-
-
-
-
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  var url = form.elements.url.value;
+  fetch('/clip', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ url: url }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    getStatus(data.task_id)
+  })
+});

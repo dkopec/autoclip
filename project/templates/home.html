@@ -14,6 +14,16 @@
       <button type="button" class="btn btn-primary" onclick="handleClick(3)">Long</a>
     </div>
   </div>
+  <div>
+    <p>Provide a url to the video you want to clip.</p>
+    <form id="download-form" method="get">
+      <div class="form-group">
+        <label for="url">URL:</label>
+        <input type="text" class="form-control" id="url" name="url" required>
+      </div>
+      <button type="submit" class="btn btn-primary" id="submit-button">Download</button>
+    </form>
+  </div>
   <br><br>
   <div>
     <h3>Task Status</h3>
