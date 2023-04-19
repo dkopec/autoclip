@@ -1,4 +1,4 @@
-## Asynchronous Tasks with FastAPI and Celery
+## Asynchronous Video Downloading and Processing with FastAPI, Celery, Redis, Minio all on Docker
 
 This project uses [FastAPI](https://github.com/tiangolo/fastapi), [Celery](https://github.com/celery/celery), [Redis](https://redis.io/), [Minio](https://min.io/) and [Docker](https://www.docker.com/) serve a video downloading and processing service.
 
