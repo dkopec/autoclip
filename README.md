@@ -35,11 +35,15 @@ curl http://localhost:8004/tasks/${TASK_ID}
 - [x] Allow user to download video from url to server
 - [x] Store and show details about video
 - [x] Store video in object storage and securly download it
-- []  Make task list persistant.
-- []  List of videos downloaded. 
-- []  Prevent downloading video multiple times/check if exists and just link that.
-- []  User account and authentication so people can see their jobs and videos.
-- []  Deploy to Cloud services
+- [ ] Make task list persistant.
+- [ ] List of videos downloaded. 
+- [ ] Prevent downloading video multiple times/check if exists and just link that.
+- [ ] User account and authentication so people can see their jobs and videos.
+- [ ] Deploy to Cloud services
+- [ ] Allow users to split videos into clips automaticlly and view them
+- [ ] Allow users to post clips to Imgur
+- [ ] Allow users to create posts to Reddit
+- [ ] Setup Authentication for users
 
 
 ## Credits
