@@ -3,3 +3,12 @@ __pycache
 .DS_Store
 *.log
 db
+env
+.venv
+*.info.json
+*.mp4
+*.webp
+*.webm
+downloads
+data
+vault

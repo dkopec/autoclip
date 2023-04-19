@@ -12,6 +12,11 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - REDDIS_URL=redis://redis:6379/0
+      - MINIO_URL=host.docker.internal:9000 # https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
+      - MINIO_ACCESS_KEY=K5Uj7tTYNX2zdyPU
+      - MINIO_SECRET_KEY=BBFufL13fafNSWL9L6oNugkWghNUQzSs
+      - MINIO_BUCKET_VIDEO=video
     depends_on:
       - redis
 
@@ -20,12 +25,20 @@ services:
     command: celery -A worker.celery worker --loglevel=info --logfile=logs/celery.log
     volumes:
       - ./project:/usr/src/app
+      - ./downloads:/data
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - CELERY_FLOWER_URL=http://dashboard:5555
+      - MINIO_URL=host.docker.internal:9000 # https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
+      - MINIO_ACCESS_KEY=K5Uj7tTYNX2zdyPU
+      - MINIO_SECRET_KEY=BBFufL13fafNSWL9L6oNugkWghNUQzSs
+      - MINIO_BUCKET_VIDEO=video
+      - REDDIS_URL=redis://redis:6379/0
     depends_on:
       - web
       - redis
+      - storage
 
   redis:
     image: redis:7
@@ -56,3 +69,15 @@ services:
       - web
       - redis
       - worker
+  
+  storage:
+    image: quay.io/minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - ./data:/data
+    environment:
+      - MINIO_ROOT_USER=minio99
+      - MINIO_ROOT_PASSWORD=minio123
+    command: server /data --console-address ":9001"

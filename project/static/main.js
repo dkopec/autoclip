@@ -4,6 +4,16 @@
   console.log('Sanity Check!');
 })();
 
+function isValidHttpUrl(string) {
+  let url;
+  try {
+      url = new URL(string);
+  } catch (_) {
+      return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 function handleClick(type) {
   fetch('/tasks', {
     method: 'POST',
@@ -42,7 +52,7 @@ function getStatus(taskID) {
           break;
       }
       var status = `${status_icon} ${res.task_status}`;
-      var result = res.task_result;
+      var result = `<a href="/video/${res.task_result}" target="_blank">See Details</a>`;
       // Get a reference to the table and the rows of the table
       var table = document.getElementById("tasks");
       var rows = table.getElementsByTagName("tr");
@@ -82,9 +92,3 @@ function getStatus(taskID) {
     })
     .catch(err => console.log(err));
 }
-
-
-
-
-
-
