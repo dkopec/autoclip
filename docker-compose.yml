@@ -12,6 +12,11 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - REDDIS_URL=redis://redis:6379/0
+      - MINIO_URL=host.docker.internal:9000 # https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
+      - MINIO_ACCESS_KEY=K5Uj7tTYNX2zdyPU
+      - MINIO_SECRET_KEY=BBFufL13fafNSWL9L6oNugkWghNUQzSs
+      - MINIO_BUCKET_VIDEO=video
     depends_on:
       - redis
 
@@ -24,7 +29,8 @@ services:
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - MINIO_URL=storage:9000
+      - CELERY_FLOWER_URL=http://dashboard:5555
+      - MINIO_URL=host.docker.internal:9000 # https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach
       - MINIO_ACCESS_KEY=K5Uj7tTYNX2zdyPU
       - MINIO_SECRET_KEY=BBFufL13fafNSWL9L6oNugkWghNUQzSs
       - MINIO_BUCKET_VIDEO=video

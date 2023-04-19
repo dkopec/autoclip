@@ -1,0 +1,69 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="starter-template">
+    <h1><a href="/" style="text-decoration: none; color:black;">AutoClip</a></h1>
+    <hr><br>
+    <div class="container">
+        <h3>Video: {{ video.title }} </h3>
+        <button id="download-btn" onclick=getDownloadLink("{{video.video_filename}}")>Get Download Link</button>
+        <div id="video-details">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="video">
+                    {% for key, value in video.items() %}
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>  
+
+    function getDownloadLink(video_file) {
+        fetch(`/download/${video_file}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(res => {
+                var download_btn = document.getElementById("download-btn");
+                var download_lnk = document.createElement("a");
+                download_lnk.href = res;
+                download_lnk.target = "_blank";
+                download_lnk.textContent = "Download Now"
+                download_btn.parentNode.replaceChild(download_lnk, download_btn);
+                setTimeout(function () {
+                    container.replaceChild(download_btn, download_lnk);
+                }, 3600000);
+            });
+    };
+
+    window.addEventListener("load", function () {
+        var table = document.getElementById("video");
+        var rows = table.getElementsByTagName("tr");
+        for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var details = row.cells[1].innerHTML
+            if (isValidHttpUrl(details)) {
+                row.cells[1].innerHTML = `<a href="${details}" target="_blank">${details}</a>`;
+            }
+        }
+        console.log("Page has finished loading");
+    });
+</script>
+
+{% endblock %}

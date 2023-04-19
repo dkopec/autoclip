@@ -3,23 +3,15 @@
 {% block content %}
 
 <div class="starter-template">
-  <h1>FastAPI + Celery + Docker</h1>
+  <h1><a href="/" style="text-decoration: none; color:black;">AutoClip</a></h1>
   <hr><br>
-  <div>
-    <h3>Tasks</h3>
-    <p>Pick a task length.</p>
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-primary" onclick="handleClick(1)">Short</a>
-      <button type="button" class="btn btn-primary" onclick="handleClick(2)">Medium</a>
-      <button type="button" class="btn btn-primary" onclick="handleClick(3)">Long</a>
-    </div>
-  </div>
   <div>
     <p>Provide a url to the video you want to clip.</p>
     <form id="download-form" method="get">
       <div class="form-group">
         <label for="url">URL:</label>
-        <input type="text" class="form-control" id="url" name="url" required>
+        <input type="url" class="form-control" id="url" name="url" onfocus="this.value=''"
+          value="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required>
       </div>
       <button type="submit" class="btn btn-primary" id="submit-button">Download</button>
     </form>
@@ -41,5 +33,25 @@
     </table>
   </div>
 </div>
+<script>
+  const form = document.getElementById('download-form');
+  const submitButton = document.getElementById('submit-button');
+  const taskIdElement = document.getElementById('task-id');
 
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    var url = form.elements.url.value;
+    fetch('/clip', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: url }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        getStatus(data.task_id)
+      })
+  });
+</script>
 {% endblock %}
