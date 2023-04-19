@@ -38,12 +38,12 @@ curl http://localhost:8004/tasks/${TASK_ID}
 - [ ] Make task list persistant.
 - [ ] List of videos downloaded. 
 - [ ] Prevent downloading video multiple times/check if exists and just link that.
-- [ ] User account and authentication so people can see their jobs and videos.
-- [ ] Deploy to Cloud services
+- [ ] Bring tests in line with features
 - [ ] Allow users to split videos into clips automaticlly and view them
 - [ ] Allow users to post clips to Imgur
 - [ ] Allow users to create posts to Reddit
-- [ ] Setup Authentication for users
+- [ ] User account and authentication so people can see their jobs and videos.
+- [ ] Deploy to Cloud services
 
 
 ## Credits
