@@ -1,6 +1,6 @@
 ## Asynchronous Tasks with FastAPI and Celery
 
-This project uses [FastAPI](https://github.com/tiangolo/fastapi), [Celery](https://github.com/celery/celery), and [Docker](https://www.docker.com/) to handle background processes.
+This project uses [FastAPI](https://github.com/tiangolo/fastapi), [Celery](https://github.com/celery/celery), [Redis](https://redis.io/), [Minio](https://min.io/) and [Docker](https://www.docker.com/) serve a video downloading and processing service.
 
 ## Want to use this project?
 
@@ -11,6 +11,12 @@ docker-compose up -d --build
 ```
 
 Open your browser to [http://localhost:8004](http://localhost:8004) to view the app or to [http://localhost:5556](http://localhost:5556) to view the Flower dashboard.
+
+The API documentation and testing can be found at [http://localhost:8004/docs](http://localhost:8004/docs)
+
+You can login to Minio at [http://localhost:9001/browser](http://localhost:9001/browser).
+
+Use [http://localhost:8081/](http://localhost:8081/) to view the Redis Commander dashboard.
 
 Trigger a new task:
 
