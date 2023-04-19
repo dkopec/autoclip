@@ -4,6 +4,7 @@ from fastapi import Body, FastAPI, Form, Request
 from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
 from worker import create_task, download_url
 from connections import db_get, storage_get_url
@@ -18,15 +19,17 @@ templates = Jinja2Templates(directory="templates")
 def home(request: Request):
     return templates.TemplateResponse("home.html", context={"request": request})
 
+class TestTask(BaseModel):
+    type: int | None = 1
 
-@app.post("/tasks", status_code=201)
-def run_task(payload=Body(...)):
-    task_type = payload["type"]
+@app.post("/test", status_code=201)
+def run_test(test:TestTask):
+    task_type = test.type
     task = create_task.delay(int(task_type))
     return JSONResponse({"task_id": task.id})
 
 
-@app.get("/tasks/{task_id}")
+@app.get("/task/{task_id}")
 def get_status(task_id):
     task_result = AsyncResult(task_id)
     result = {
@@ -36,11 +39,12 @@ def get_status(task_id):
     }
     return JSONResponse(result)
 
+class DownloadTask(BaseModel):
+    url: str
 
-@app.post('/clip', status_code=201)
-def clip(payload=Body(...)):
-    print(payload)
-    url = payload["url"]
+@app.post('/task', status_code=201)
+def start_download(task:DownloadTask):
+    url = task.url
     task = download_url.delay(str(url))
     return JSONResponse({"task_id": task.id})
 

@@ -21,7 +21,7 @@ Use [http://localhost:8081/](http://localhost:8081/) to view the Redis Commander
 Trigger a new task:
 
 ```sh
-curl http://localhost:8004/tasks -H "Content-Type: application/json" --data '{"uri": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}'
+curl -X 'POST' 'http://localhost:8004/task' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"url": "https://www.youtube.com/watch?v=DmH6YPWhaDY"}'
 ```
 
 Check the status:

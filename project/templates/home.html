@@ -41,7 +41,7 @@
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     var url = form.elements.url.value;
-    fetch('/clip', {
+    fetch('/task', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -14,22 +14,8 @@ function isValidHttpUrl(string) {
   return url.protocol === "http:" || url.protocol === "https:";
 }
 
-function handleClick(type) {
-  fetch('/tasks', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ type: type }),
-  })
-    .then(response => response.json())
-    .then(data => {
-      getStatus(data.task_id)
-    })
-}
-
 function getStatus(taskID) {
-  fetch(`/tasks/${taskID}`, {
+  fetch(`/task/${taskID}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
