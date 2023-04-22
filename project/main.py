@@ -14,10 +14,13 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+task_db = []
+
 
 @app.get("/")
 def home(request: Request):
-    return templates.TemplateResponse("home.html", context={"request": request})
+    tasks = task_db
+    return templates.TemplateResponse("home.html", context={"request": request, "tasks": tasks})
 
 class TestTask(BaseModel):
     type: int | None = 1
@@ -46,6 +49,7 @@ class DownloadTask(BaseModel):
 def start_download(task:DownloadTask):
     url = task.url
     task = download_url.delay(str(url))
+    task_db.append(task)
     return JSONResponse({"task_id": task.id})
 
 @app.get("/details/{item_id}")
