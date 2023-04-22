@@ -2,6 +2,52 @@
 
 This project uses [FastAPI](https://github.com/tiangolo/fastapi), [Celery](https://github.com/celery/celery), [Redis](https://redis.io/), [Minio](https://min.io/) and [Docker](https://www.docker.com/) serve a video downloading and processing service.
 
+## How it works
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant FastApi
+    participant Celery
+    participant Redis
+    participant Minio
+    participant ExternalService
+    
+    User->>FastApi: Request to download video with URL
+    FastApi->>Celery: Schedule download_video_task with URL
+    Celery->>Redis: Update status to 'pending' for URL
+    Celery->>Redis: Add URL to 'pending_videos' set
+    Celery->>ExternalService: Download video with URL
+    ExternalService->>Celery: Video downloaded
+    Celery->>Redis: Update status to 'complete' for URL
+    Celery->>Redis: Update filename for URL
+    Celery->>Redis: Remove URL from 'pending_videos' set
+    FastApi->>Redis: Query Redis for video metadata
+    Redis->>FastApi: Return video metadata to user
+```
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant WebApp
+    participant FastApi
+    participant Redis
+    participant Minio
+    
+    User->>WebApp: Click button to get download URL
+    WebApp->>FastApi: Request secure URL to download video with ID
+    FastApi->>Redis: Request video details using ID
+    Reddis->>FastApi: Return video details
+    FastApi->>Minio: Using filename from video details request secure download URL
+    Minio->>FastApi: Return secure donwload URL
+    Celery->>Redis: Add URL to 'pending_videos' set
+    Celery->>Redis: Update status to 'complete' for URL
+    Celery->>Redis: Update filename for URL
+    Celery->>Redis: Remove URL from 'pending_videos' set
+    FastApi->>Redis: Query Redis for video metadata
+    Redis->>WebApp: Return video metadata to user
+```
+
 ## Want to use this project?
 
 Spin up the containers:
